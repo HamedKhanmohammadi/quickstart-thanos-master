@@ -1,6 +1,3 @@
----
-version: '3.1'
-
 volumes:
     prometheus1_data: {}
     prometheus2_data: {}
@@ -11,7 +8,7 @@ volumes:
 
 services:
     prometheus-1:
-        image: prom/prometheus:v2.34.0
+        image: prom/prometheus:v3.6.0
         volumes:
             - ./prometheus/:/etc/prometheus/
             - prometheus1_data:/prometheus
@@ -33,7 +30,7 @@ services:
         restart: always
 
     prometheus-2:
-        image: prom/prometheus:v2.34.0
+        image: prom/prometheus:v3.6.0
         volumes:
             - ./prometheus/:/etc/prometheus/
             - prometheus2_data:/prometheus
@@ -55,7 +52,7 @@ services:
         restart: always
 
     prometheus-3:
-        image: prom/prometheus:v2.34.0
+        image: prom/prometheus:v3.6.0
         volumes:
             - ./prometheus/:/etc/prometheus/
             - prometheus3_data:/prometheus
@@ -77,7 +74,7 @@ services:
         restart: always
 
     prometheus-4:
-        image: prom/prometheus:v2.34.0
+        image: prom/prometheus:v3.6.0
         volumes:
             - ./prometheus/:/etc/prometheus/
             - prometheus4_data:/prometheus
@@ -99,7 +96,7 @@ services:
         restart: always
 
     thanos-sidecar-1:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
             - prometheus1_data:/prometheus
@@ -116,7 +113,7 @@ services:
         restart: always
 
     thanos-sidecar-2:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
             - prometheus2_data:/prometheus
@@ -133,7 +130,7 @@ services:
         restart: always
 
     thanos-sidecar-3:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
             - prometheus3_data:/prometheus
@@ -150,7 +147,7 @@ services:
         restart: always
 
     thanos-sidecar-4:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
             - prometheus4_data:/prometheus
@@ -167,7 +164,7 @@ services:
         restart: always
 
     thanos-query-frontend:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         command:
             - 'query-frontend'
             - '--http-address=0.0.0.0:10901'
@@ -179,7 +176,7 @@ services:
         restart: always
 
     thanos-querier:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         command:
             - 'query'
             - '--grpc-address=0.0.0.0:10091'
@@ -201,7 +198,7 @@ services:
         restart: always
 
     thanos-store-gateway:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
         command:
@@ -215,7 +212,7 @@ services:
         restart: always
 
     thanos-compactor:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
         command:
@@ -229,7 +226,7 @@ services:
         restart: always
 
     thanos-ruler:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
         command:
@@ -253,7 +250,7 @@ services:
         restart: always
 
     thanos-bucket-web:
-        image: quay.io/thanos/thanos:v0.25.2
+        image: quay.io/thanos/thanos:v0.39.2
         volumes:
             - ./thanos/:/etc/thanos/
         command:
@@ -273,7 +270,7 @@ services:
         restart: always
 
     minio:
-        image: minio/minio:RELEASE.2020-05-01T22-19-14Z
+        image: minio/minio:RELEASE.2025-09-20T00-00-00Z
         volumes:
             - minio_data:/data
         entrypoint: sh
@@ -286,7 +283,7 @@ services:
             - 9000:9000
 
     node-exporter:
-        image: prom/node-exporter:v1.3.1
+        image: prom/node-exporter:v1.9.0
         volumes:
             - /proc:/host/proc:ro
             - /sys:/host/sys:ro
@@ -301,7 +298,7 @@ services:
         restart: always
 
     alertmanager:
-        image: prom/alertmanager:v0.24.0
+        image: prom/alertmanager:v0.27.0
         ports:
             - 9093:9093
         volumes:
@@ -312,7 +309,7 @@ services:
             - '--storage.path=/alertmanager'
 
     cadvisor:
-        image: gcr.io/google_containers/cadvisor:v0.36.0
+        image: gcr.io/cadvisor/cadvisor:v0.53.0
         volumes:
             - /:/rootfs:ro
             - /var/run:/var/run:rw
@@ -323,7 +320,7 @@ services:
         restart: always
 
     grafana:
-        image: grafana/grafana:8.4.4
+        image: grafana/grafana:12.2.0
         user: "104"
         depends_on:
             - prometheus-1
